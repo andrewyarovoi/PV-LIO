@@ -1,4 +1,7 @@
+#define PCL_NO_PRECOMPILE
+
 #include "preprocess.h"
+#include <pcl/filters/filter.h>
 
 #define RETURN0     0x00
 #define RETURN0AND1 0x10
@@ -174,6 +177,8 @@ void Preprocess::oust64_handler(const sensor_msgs::PointCloud2::ConstPtr &msg)
   pl_full.clear();
   pcl::PointCloud<ouster_ros::Point> pl_orig;
   pcl::fromROSMsg(*msg, pl_orig);
+  std::vector<int> indices;
+  pcl::removeNaNFromPointCloud(pl_orig, pl_orig, indices);
   int plsize = pl_orig.size();
   pl_corn.reserve(plsize);
   pl_surf.reserve(plsize);
